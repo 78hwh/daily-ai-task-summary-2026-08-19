@@ -1,0 +1,872 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>今日任务总结 | AI 真人短剧与电商智能客服 MVP</title>
+  <meta name="description" content="2026-08-19 今日任务总结：AI 真人短剧（高保真）与 AI 海外短剧；国内电商智能客服助手 MVP 调研与方案报告。">
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f4f1ea;
+      --paper: #fffdf8;
+      --ink: #202124;
+      --muted: #62615c;
+      --line: #ded8ca;
+      --strong: #111111;
+      --green: #0d6b57;
+      --blue: #245c7a;
+      --red: #a33b34;
+      --gold: #af7c1f;
+      --soft-green: #e7f1eb;
+      --soft-blue: #e8f0f4;
+      --soft-red: #f5e8e5;
+      --soft-gold: #f4ecd9;
+      --shadow: 0 18px 50px rgba(40, 35, 25, 0.08);
+      --radius: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background:
+        linear-gradient(180deg, rgba(255, 253, 248, 0.92), rgba(244, 241, 234, 0.94)),
+        radial-gradient(circle at top left, rgba(13, 107, 87, 0.12), transparent 32%),
+        radial-gradient(circle at bottom right, rgba(175, 124, 31, 0.13), transparent 28%);
+      color: var(--ink);
+      font-family: "Inter", "Noto Sans SC", "Microsoft YaHei", Arial, sans-serif;
+      line-height: 1.65;
+      letter-spacing: 0;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .page {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .hero {
+      min-height: 42vh;
+      display: grid;
+      align-items: end;
+      padding: 64px 0 34px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 34px;
+      align-items: end;
+    }
+
+    .eyebrow {
+      margin: 0 0 12px;
+      color: var(--green);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      max-width: 760px;
+      margin: 0;
+      color: var(--strong);
+      font-size: clamp(36px, 6vw, 76px);
+      line-height: 0.98;
+      letter-spacing: 0;
+    }
+
+    .hero p {
+      margin: 18px 0 0;
+      color: var(--muted);
+      font-size: 17px;
+      max-width: 650px;
+    }
+
+    .meta-panel {
+      background: rgba(255, 253, 248, 0.78);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 18px;
+      box-shadow: var(--shadow);
+    }
+
+    .meta-row {
+      display: grid;
+      grid-template-columns: 96px 1fr;
+      gap: 14px;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(222, 216, 202, 0.72);
+      font-size: 14px;
+    }
+
+    .meta-row:last-child {
+      border-bottom: 0;
+    }
+
+    .meta-row b {
+      color: var(--strong);
+    }
+
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(14px);
+      background: rgba(244, 241, 234, 0.86);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .nav-inner {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+      display: flex;
+      gap: 10px;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+    }
+
+    .nav-title {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--strong);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--muted);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 7px 12px;
+      font-size: 13px;
+      background: rgba(255, 253, 248, 0.75);
+    }
+
+    main {
+      padding: 42px 0 70px;
+    }
+
+    .section {
+      margin-top: 34px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .section:first-child {
+      margin-top: 0;
+    }
+
+    .section-head {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 20px;
+      align-items: start;
+      padding: 30px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .section-kicker {
+      margin: 0 0 8px;
+      color: var(--blue);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    h2 {
+      margin: 0;
+      color: var(--strong);
+      font-size: clamp(25px, 3vw, 38px);
+      line-height: 1.15;
+      letter-spacing: 0;
+    }
+
+    .section-head p {
+      margin: 12px 0 0;
+      max-width: 820px;
+      color: var(--muted);
+      font-size: 16px;
+    }
+
+    .tag-stack {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: flex-end;
+      max-width: 360px;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      min-height: 30px;
+      padding: 5px 10px;
+      border-radius: 999px;
+      background: var(--soft-blue);
+      color: var(--blue);
+      font-size: 12px;
+      font-weight: 750;
+      white-space: nowrap;
+    }
+
+    .tag.green {
+      background: var(--soft-green);
+      color: var(--green);
+    }
+
+    .tag.gold {
+      background: var(--soft-gold);
+      color: #7b560e;
+    }
+
+    .tag.red {
+      background: var(--soft-red);
+      color: var(--red);
+    }
+
+    .section-body {
+      padding: 30px;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+
+    .summary-card {
+      min-height: 148px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 18px;
+      background: #fffaf0;
+    }
+
+    .summary-card h3 {
+      margin: 0 0 8px;
+      color: var(--strong);
+      font-size: 17px;
+      line-height: 1.25;
+    }
+
+    .summary-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .panel {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 20px;
+      background: #fffdf8;
+    }
+
+    .panel h3 {
+      margin: 0 0 12px;
+      font-size: 19px;
+      line-height: 1.3;
+      color: var(--strong);
+    }
+
+    ul {
+      margin: 0;
+      padding-left: 20px;
+    }
+
+    li {
+      margin: 8px 0;
+      color: var(--muted);
+    }
+
+    li strong {
+      color: var(--strong);
+    }
+
+    .callout {
+      margin: 22px 0;
+      padding: 18px 20px;
+      border-left: 4px solid var(--green);
+      background: var(--soft-green);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      color: #214d42;
+      font-weight: 650;
+    }
+
+    .callout.gold {
+      border-left-color: var(--gold);
+      background: var(--soft-gold);
+      color: #5d4618;
+    }
+
+    .table-wrap {
+      width: 100%;
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fffdf8;
+      margin: 18px 0;
+    }
+
+    table {
+      width: 100%;
+      min-width: 760px;
+      border-collapse: collapse;
+    }
+
+    th,
+    td {
+      padding: 13px 14px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+      font-size: 14px;
+    }
+
+    th {
+      background: #f8f4ea;
+      color: var(--strong);
+      font-weight: 800;
+    }
+
+    tr:last-child td {
+      border-bottom: 0;
+    }
+
+    td {
+      color: var(--muted);
+    }
+
+    .roadmap {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      counter-reset: step;
+    }
+
+    .step {
+      position: relative;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 44px 16px 16px;
+      background: #fffaf0;
+      min-height: 150px;
+    }
+
+    .step:before {
+      counter-increment: step;
+      content: counter(step);
+      position: absolute;
+      top: 14px;
+      left: 16px;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: var(--green);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 850;
+    }
+
+    .step h3 {
+      margin: 0 0 8px;
+      color: var(--strong);
+      font-size: 16px;
+    }
+
+    .step p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .source-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .source-list a {
+      display: block;
+      min-height: 44px;
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      text-decoration: none;
+      color: var(--blue);
+      background: #fffdf8;
+      font-size: 13px;
+      overflow-wrap: anywhere;
+    }
+
+    footer {
+      padding: 24px 0 42px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    @media (max-width: 900px) {
+      .hero-grid,
+      .section-head,
+      .two-col,
+      .summary-grid,
+      .roadmap,
+      .source-list {
+        grid-template-columns: 1fr;
+      }
+
+      .section-head {
+        padding: 24px;
+      }
+
+      .section-body {
+        padding: 24px;
+      }
+
+      .tag-stack {
+        justify-content: flex-start;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .page,
+      .nav-inner {
+        width: min(100% - 22px, 1180px);
+      }
+
+      .hero {
+        min-height: auto;
+        padding: 42px 0 26px;
+      }
+
+      .nav-inner {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .nav-links {
+        justify-content: flex-start;
+      }
+
+      .section-head,
+      .section-body {
+        padding: 18px;
+      }
+
+      table {
+        min-width: 680px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero page">
+    <div class="hero-grid">
+      <div>
+        <p class="eyebrow">Daily Task Summary · 2026-08-19</p>
+        <h1>AI 真人短剧与电商智能客服 MVP</h1>
+        <p>今日总结分为两个板块：一是 AI 真人短剧（高保真）与 AI 海外短剧的工具、成本和落地判断；二是国内电商智能客服助手 MVP 的调研与方案。本文只保留可执行结论，不展开自动化编排细节。</p>
+      </div>
+      <aside class="meta-panel" aria-label="今日概览">
+        <div class="meta-row"><b>日期</b><span>2026-08-19</span></div>
+        <div class="meta-row"><b>主题一</b><span>AI 真人短剧（高保真）与 AI 海外短剧</span></div>
+        <div class="meta-row"><b>主题二</b><span>国内电商智能客服助手 MVP</span></div>
+        <div class="meta-row"><b>交付物</b><span>精简总结页，可通过 GitHub Pages 免费访问</span></div>
+      </aside>
+    </div>
+  </header>
+
+  <nav aria-label="页面导航">
+    <div class="nav-inner">
+      <div class="nav-title">今日任务</div>
+      <div class="nav-links">
+        <a href="#ai-drama">AI 真人短剧</a>
+        <a href="#ecommerce-copilot">电商智能客服</a>
+        <a href="#sources">参考项目</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="page">
+    <section id="ai-drama" class="section">
+      <div class="section-head">
+        <div>
+          <p class="section-kicker">Board 01</p>
+          <h2>AI 真人短剧（高保真）与 AI 海外短剧</h2>
+          <p>今日结论：前期不应追求“全开源本地一次生成完整高保真短剧”，而应先搭建低成本验证漏斗，用本地工具完成脚本、角色参考图、镜头首帧和样片筛选，再把少量高价值镜头交给高保真视频 API 或云 GPU。</p>
+        </div>
+        <div class="tag-stack">
+          <span class="tag green">高保真真人感</span>
+          <span class="tag">海外短剧</span>
+          <span class="tag gold">成本控制</span>
+          <span class="tag red">角色一致性</span>
+        </div>
+      </div>
+
+      <div class="section-body">
+        <div class="summary-grid">
+          <article class="summary-card">
+            <h3>核心判断</h3>
+            <p>短剧公司真正缺的不是单个模型，而是能稳定生产、能投放、能本地化、能控成本的内容流水线。</p>
+          </article>
+          <article class="summary-card">
+            <h3>前期切入</h3>
+            <p>先做 10-30 秒竖屏样片，验证题材、人设、镜头质感、Hook 和转化潜力，再扩展到多集连续剧。</p>
+          </article>
+          <article class="summary-card">
+            <h3>算力策略</h3>
+            <p>本地 6GB 显存适合做首帧、修脸、字幕和合成；高保真视频生成先用 API 或云端精选镜头。</p>
+          </article>
+        </div>
+
+        <div class="two-col">
+          <article class="panel">
+            <h3>最大痛点</h3>
+            <ul>
+              <li><strong>角色一致性：</strong>同一角色跨镜头容易换脸、换年龄、换气质。</li>
+              <li><strong>真人动作自然度：</strong>手部、眼神、走位、炒菜、拥抱、转身等动作容易变形。</li>
+              <li><strong>表演连续性：</strong>短剧需要情绪递进，单镜头好看不等于剧情成立。</li>
+              <li><strong>镜头可控性：</strong>模型容易自由发挥，导致构图、服装、道具和场景断裂。</li>
+              <li><strong>海外本地化：</strong>不是翻译字幕，而是文化元素、冲突结构、角色关系和节奏都要适配目标市场。</li>
+              <li><strong>成本不可控：</strong>视频生成按秒计费且重试率高，必须先过滤低质量镜头。</li>
+              <li><strong>合规风险：</strong>肖像、声音、AI 标识、平台审核、剧情尺度都需要提前设计边界。</li>
+            </ul>
+          </article>
+
+          <article class="panel">
+            <h3>前期推荐路线</h3>
+            <ul>
+              <li><strong>脚本：</strong>用大模型生成短剧 JSON，包含人物、场景、分镜、字幕、旁白和风险点。</li>
+              <li><strong>角色：</strong>先生成角色参考图和角色圣经，锁定年龄、脸型、发型、服装、气质。</li>
+              <li><strong>首帧：</strong>用 ComfyUI 生成镜头首帧，优先保证脸、构图、光线和道具稳定。</li>
+              <li><strong>样片：</strong>用 FFmpeg 或本地 worker 做图片动态样片，低成本筛选题材。</li>
+              <li><strong>视频：</strong>只把通过质检的关键镜头送到 Seedance、可灵、Runway、Veo、LTX 或云端开源模型。</li>
+              <li><strong>复盘：</strong>记录每条样片的镜头成本、重试次数、通过率和可投放程度。</li>
+            </ul>
+          </article>
+        </div>
+
+        <div class="callout">
+          最小可行方案：脚本和分镜标准化、本地生成角色图和首帧、低成本合成竖屏样片、人工挑选优秀镜头，再少量调用高保真视频模型。这样可以把“模型能力不稳定”转化成“生产流程可控”。
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>阶段</th>
+                <th>目标</th>
+                <th>建议工具</th>
+                <th>成本策略</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>0-500 元/月</td>
+                <td>验证题材、人设、画面风格</td>
+                <td>DeepSeek、ComfyUI、IPAdapter、Impact Pack、FFmpeg、edge-tts</td>
+                <td>本地生图和样片为主，尽量不调用付费视频模型</td>
+              </tr>
+              <tr>
+                <td>500-3000 元/月</td>
+                <td>制作少量高保真镜头</td>
+                <td>Runway、可灵、Seedance、LTX API、Veo 等</td>
+                <td>10 条样片只选 1-2 条做视频版，控制重试率</td>
+              </tr>
+              <tr>
+                <td>3000-10000 元/月</td>
+                <td>小规模投放测试</td>
+                <td>视频 API、云 GPU、自动质检、素材管理</td>
+                <td>按镜头统计成本，淘汰高重试低转化题材</td>
+              </tr>
+              <tr>
+                <td>万元以上/月</td>
+                <td>接近商业化生产</td>
+                <td>多模型路由、角色资产库、配音、本地化、投放分析</td>
+                <td>建立素材漏斗和 ROI 数据闭环，再扩大产能</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="roadmap" aria-label="AI 短剧下一步">
+          <article class="step">
+            <h3>固化 Prompt Skill</h3>
+            <p>把人物设定、分镜、视频提示词和负面提示词整理成可复用模板。</p>
+          </article>
+          <article class="step">
+            <h3>建立角色资产</h3>
+            <p>为每个主角生成参考图、服装规范、镜头限制和不可变特征。</p>
+          </article>
+          <article class="step">
+            <h3>做 10 秒样片</h3>
+            <p>用四镜结构快速验证题材、氛围、表演动作和竖屏观感。</p>
+          </article>
+          <article class="step">
+            <h3>接高保真视频</h3>
+            <p>只对通过首帧质检的镜头调用付费视频模型或云端开源模型。</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="ecommerce-copilot" class="section">
+      <div class="section-head">
+        <div>
+          <p class="section-kicker">Board 02</p>
+          <h2>国内电商智能客服助手 MVP 调研与方案报告</h2>
+          <p>今日围绕国内电商客服场景，完成行业案例参考、平台差异分析、客服痛点梳理、产品定位收敛和 MVP 方案设计。核心问题是：初创公司如何用较小成本验证 AI 客服助手的真实价值。</p>
+        </div>
+        <div class="tag-stack">
+          <span class="tag green">客服 Copilot</span>
+          <span class="tag">订单物流</span>
+          <span class="tag gold">售后 SOP</span>
+          <span class="tag red">风险标红</span>
+        </div>
+      </div>
+
+      <div class="section-body">
+        <div class="summary-grid">
+          <article class="summary-card">
+            <h3>产品定位</h3>
+            <p>面向国内中小电商商家的 AI 客服 Copilot，先辅助人工客服，而不是直接替代客服。</p>
+          </article>
+          <article class="summary-card">
+            <h3>MVP 目标</h3>
+            <p>识别高频问题、查询订单物流、生成推荐回复、提醒售后风险，并让客服一键采纳或转人工。</p>
+          </article>
+          <article class="summary-card">
+            <h3>优先切入</h3>
+            <p>建议选择抖店或淘宝/天猫，加服饰、美妆、家居等高频咨询垂类进行单平台验证。</p>
+          </article>
+        </div>
+
+        <div class="callout gold">
+          核心结论：国内电商智能客服助手的 MVP 应从“辅助人工客服”开始，而不是从“全自动客服”开始。商家真正关心的是少漏回、少差评、少查后台、少乱答政策。
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>调研结论</th>
+                <th>说明</th>
+                <th>MVP 含义</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>高频问题集中</td>
+                <td>发货、物流、退换货、退款、尺码、优惠、发票、投诉差评最常见</td>
+                <td>先做高频问题识别和标准回复建议</td>
+              </tr>
+              <tr>
+                <td>平台规则敏感</td>
+                <td>不能乱承诺退款、赔付、发货时间、商品功效</td>
+                <td>高风险场景必须转人工，回复前做合规校验</td>
+              </tr>
+              <tr>
+                <td>Copilot 更适合</td>
+                <td>客服需要提效，但商家不愿把售后责任交给黑盒机器人</td>
+                <td>默认 AI 生成建议，人工确认后发送</td>
+              </tr>
+              <tr>
+                <td>多平台知识统一有价值</td>
+                <td>商家需要统一商品知识、活动规则、售后政策和客服话术</td>
+                <td>知识库必须按平台、店铺、商品、生效时间管理</td>
+              </tr>
+              <tr>
+                <td>平台接入是门槛</td>
+                <td>淘宝/天猫、抖店、拼多多、京东开放能力不同</td>
+                <td>第一阶段只选一个平台和一个垂类验证</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="two-col">
+          <article class="panel">
+            <h3>7 类核心痛点</h3>
+            <ul>
+              <li><strong>售前重复咨询：</strong>库存、尺码、优惠、发货时间反复出现。</li>
+              <li><strong>物流问题高频：</strong>催发货、物流不动、签收未收到容易引发重复咨询。</li>
+              <li><strong>售后处理复杂：</strong>退货、退款、少发、错发、破损对新客服不友好。</li>
+              <li><strong>平台规则敏感：</strong>错误承诺可能引发纠纷、违规或平台介入。</li>
+              <li><strong>人工效率低：</strong>客服反复查订单、物流、商品和售后政策。</li>
+              <li><strong>多店铺话术不统一：</strong>不同店铺和活动规则导致服务质量波动。</li>
+              <li><strong>投诉差评风险高：</strong>差评、投诉、举报、12315 等需要及时升级。</li>
+            </ul>
+          </article>
+
+          <article class="panel">
+            <h3>MVP 只保留 6 个模块</h3>
+            <ul>
+              <li><strong>客服工作台：</strong>会话列表、消息详情、人工回复、AI 推荐回复。</li>
+              <li><strong>知识库：</strong>FAQ、商品信息、活动规则、售后政策、物流规则。</li>
+              <li><strong>意图识别：</strong>识别发货、物流、退货、退款、尺码、优惠、投诉等。</li>
+              <li><strong>订单/物流查询：</strong>查询订单状态、发货状态、物流状态。</li>
+              <li><strong>AI 回复建议：</strong>生成 1-3 条可直接编辑和发送的回复。</li>
+              <li><strong>风险识别：</strong>投诉、差评、赔付、平台介入、高金额退款自动标红。</li>
+            </ul>
+          </article>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>风险等级</th>
+                <th>处理方式</th>
+                <th>典型场景</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>低风险</td>
+                <td>生成回复建议，后续可灰度自动回复</td>
+                <td>基础 FAQ、发货时间、物流状态、尺码规格、发票说明</td>
+              </tr>
+              <tr>
+                <td>中风险</td>
+                <td>生成回复草稿，由客服确认后发送</td>
+                <td>退换货解释、退款进度、商品瑕疵、活动争议</td>
+              </tr>
+              <tr>
+                <td>高风险</td>
+                <td>不自动回复，标红提醒并转人工处理</td>
+                <td>差评、投诉、举报、平台介入、12315、假货、质量事故、赔付、补发、仅退款争议</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="two-col">
+          <article class="panel">
+            <h3>知识库结构</h3>
+            <ul>
+              <li><strong>商品知识：</strong>标题、SKU、尺码、规格、材质、使用说明。</li>
+              <li><strong>活动规则：</strong>优惠券、满减、赠品、预售、直播活动。</li>
+              <li><strong>物流规则：</strong>发货时效、默认快递、偏远地区、异常件处理。</li>
+              <li><strong>售后规则：</strong>退货、换货、退款、破损、漏发、错发。</li>
+              <li><strong>客服话术：</strong>催发货安抚、退货解释、差评挽回、发票说明。</li>
+            </ul>
+          </article>
+
+          <article class="panel">
+            <h3>暂不做的能力</h3>
+            <ul>
+              <li>不做全平台深度接入。</li>
+              <li>不做自动大额退款、自动赔付、自动补发。</li>
+              <li>不做自动改地址、自动取消订单。</li>
+              <li>不做复杂 CRM、客服外呼和完全无人值守客服。</li>
+              <li>不把产品包装成“替代客服外包”，先强调提效和风险提醒。</li>
+            </ul>
+          </article>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>套餐</th>
+                <th>价格建议</th>
+                <th>功能范围</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>试用版</td>
+                <td>免费/低价</td>
+                <td>1 个店铺、AI 回复建议、基础知识库</td>
+              </tr>
+              <tr>
+                <td>基础版</td>
+                <td>199-499 元/月</td>
+                <td>单店铺、知识库、AI 推荐回复、风险提醒</td>
+              </tr>
+              <tr>
+                <td>成长版</td>
+                <td>699-1999 元/月</td>
+                <td>订单/物流接入、低风险自动回复、数据看板</td>
+              </tr>
+              <tr>
+                <td>专业版</td>
+                <td>2999 元/月起</td>
+                <td>多店铺、多客服、质检、售后 SOP、代运营管理</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout">
+          最小可行产品可以概括为：一个客服工作台、一个店铺知识库、一个订单/物流查询工具、一个 AI 推荐回复按钮、一个风险标红和转人工机制、一个数据看板。
+        </div>
+      </div>
+    </section>
+
+    <section id="sources" class="section">
+      <div class="section-head">
+        <div>
+          <p class="section-kicker">Reference</p>
+          <h2>可借鉴的开源项目与资料</h2>
+          <p>以下只列今日总结中与 AI 短剧工具、Prompt Skill、ComfyUI 和视频生成相关的参考项；不展开任何具体自动化编排工作流。</p>
+        </div>
+      </div>
+      <div class="section-body">
+        <div class="source-list">
+          <a href="https://github.com/Alisa0808/vibe-creating-skill" target="_blank" rel="noreferrer">Alisa0808/vibe-creating-skill</a>
+          <a href="https://github.com/VoltAgent/awesome-agent-skills" target="_blank" rel="noreferrer">VoltAgent/awesome-agent-skills</a>
+          <a href="https://github.com/comfy-org/ComfyUI-Manager" target="_blank" rel="noreferrer">Comfy-Org/ComfyUI-Manager</a>
+          <a href="https://github.com/cubiq/ComfyUI_IPAdapter_plus" target="_blank" rel="noreferrer">cubiq/ComfyUI_IPAdapter_plus</a>
+          <a href="https://github.com/ltdrdata/ComfyUI-Impact-Pack" target="_blank" rel="noreferrer">ltdrdata/ComfyUI-Impact-Pack</a>
+          <a href="https://github.com/Fannovel16/comfyui_controlnet_aux" target="_blank" rel="noreferrer">Fannovel16/comfyui_controlnet_aux</a>
+          <a href="https://github.com/city96/ComfyUI-GGUF" target="_blank" rel="noreferrer">city96/ComfyUI-GGUF</a>
+          <a href="https://github.com/KlingAIResearch/LivePortrait" target="_blank" rel="noreferrer">KlingAIResearch/LivePortrait</a>
+          <a href="https://github.com/TMElyralab/MuseTalk" target="_blank" rel="noreferrer">TMElyralab/MuseTalk</a>
+          <a href="https://github.com/Lightricks/LTX-Desktop" target="_blank" rel="noreferrer">Lightricks/LTX-Desktop</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="page">
+    <p>今日任务总结：AI 真人短剧（高保真）与 AI 海外短剧；国内电商智能客服助手 MVP 调研与方案报告。生成日期：2026-08-19。</p>
+  </footer>
+</body>
+</html>
